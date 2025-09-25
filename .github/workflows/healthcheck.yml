@@ -1,0 +1,32 @@
+name: Website Health Check
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  healthcheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run health check script
+        env: 
+          WEBSITE_DOMAIN: ${{ vars.TIAGOCODE_PROJECT_DOMAIN_NAME }}
+          DISCORD_HEALTH_CHECK_WEBHOOK_URL: ${{ secrets.TIAGOCODE_DISCORD_HEALTH_CHECK_WEBHOOK_URL }}
+          DISCORD_ALERTS_WEBHOOK_URL: ${{ secrets.TIAGOCODE_DISCORD_ALERTS_WEBHOOK_URL }}
+        run: |
+          python health_monitor.py
