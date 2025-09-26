@@ -37,12 +37,10 @@ def check_website_status(url):
 
 
 def send_discord_notification(webhook_url, message):
-    payload = {
-        "content": message
-    }
-
     try:
-        response = requests.post(webhook_url, json=payload)
+        response = requests.post(webhook_url, json={
+        "content": message
+    })
     except Exception as e:
         print("❌ Failed to send Discord notification: {e}")
 
@@ -61,9 +59,9 @@ if __name__ == "__main__":
         if website_status == "ok":
             message = f"✅ **{url}** is UP."
         elif website_status == "timeout":
-            message = f"⚠️ **{url}** timed out."
+            message = f"⌛️ **{url}** timed out."
         elif website_status == "connection_error":
-            message = f"⚠️ **{url}** is unreachable."
+            message = f"🔌 **{url}** is unreachable."
         elif str(website_status).startswith("status_"):
             code = website_status.split("_")[1]
             message = f"⚠️ **{url}** returned HTTP status `{code}`."
