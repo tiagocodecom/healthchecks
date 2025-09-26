@@ -27,9 +27,6 @@ def check_website_status(url):
         if response.status_code == 200:
             return "ok"
         else:
-            print(response.headers)
-            print(response.status_code)
-            print(response.text)
             return f"status_{response.status_code}"
     except requests.exceptions.Timeout:
         return "timeout"
