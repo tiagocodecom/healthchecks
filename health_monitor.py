@@ -39,8 +39,8 @@ def check_website_status(url):
 def send_discord_notification(webhook_url, message):
     try:
         response = requests.post(webhook_url, json={
-        "content": message
-    })
+            "content": message
+        })
     except Exception as e:
         print("❌ Failed to send Discord notification: {e}")
 
